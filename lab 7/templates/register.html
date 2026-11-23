@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация пользователей{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h2>Создание пользователя</h2>
+    <div>
+        Вы вошли как <b>{{ current_user }}</b> |
+        <a href="{{ url_for('logout') }}">Выйти</a>
+    </div>
+</div>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.username.label }}
+        {{ form.username() }}
+        {% for error in form.username.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password() }}
+        {% for error in form.password.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        {{ form.confirm_password.label }}
+        {{ form.confirm_password() }}
+        {% for error in form.confirm_password.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+    </div>
+    {{ form.submit() }}
+</form>
+
+<h3>Пользователи</h3>
+<table>
+    <tr>
+        <th>Логин</th>
+        <th>Дата регистрации</th>
+        <th>Последний вход</th>
+    </tr>
+    {% for username, data in users.items() %}
+    <tr>
+        <td>{{ username }}</td>
+        <td>{{ data.registered_at }}</td>
+        <td>{{ data.last_login or '—' }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
